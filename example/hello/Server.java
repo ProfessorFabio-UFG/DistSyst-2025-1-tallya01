@@ -93,7 +93,7 @@ public class Server implements Hello {
 
         try {
             Server obj = new Server();
-            Hello stub = (Hello) UnicastRemoteObject.exportObject(obj, 0);
+            Hello stub = (Hello) UnicastRemoteObject.exportObject(obj, 1900);
 
             // Bind the remote object's stub in the registry
             Registry registry = LocateRegistry.getRegistry();
