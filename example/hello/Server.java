@@ -39,6 +39,7 @@ package example.hello;
 
 import java.rmi.registry.Registry;
 import java.rmi.registry.LocateRegistry;
+import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
@@ -100,6 +101,14 @@ public class Server implements Hello {
             registry.bind("Hello", stub);
 
             System.err.println("Server ready");
+        } catch (AlreadyBoundException e) {
+            try {
+                Registry registry = LocateRegistry.getRegistry();
+                registry.unbind("Hello");
+            } catch (Exception e2) {
+                System.err.println("Unbind exception: " + e2.toString());
+                e2.printStackTrace();
+            }
         } catch (Exception e) {
             System.err.println("Server exception: " + e.toString());
             e.printStackTrace();
