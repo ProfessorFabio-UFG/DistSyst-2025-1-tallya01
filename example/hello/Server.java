@@ -43,11 +43,50 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 public class Server implements Hello {
+    private String userName;
+    private final long startTime = System.currentTimeMillis();
 
     public Server() {}
 
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserName() {
+        return this.userName;
+    }
+
     public String sayHello() {
-        return "Hello, world!";
+        if(this.userName == null)
+            return "Hello, world!";
+
+        return "Hello, " + this.userName + '!';
+    }
+
+    public String getUpTime() throws RemoteException {
+        long upTime = System.currentTimeMillis() - this.startTime;
+        return "Server up for " + upTime/1000 + "s";
+    }
+
+    public double[] solveQuadraticEquation(double a, double b, double c) throws RemoteException {
+        double delta = Math.pow(b, 2) - (4 * a * c);
+        
+        if(delta < 0) 
+            throw new ArithmeticException("Provided equation does not have real solution");
+
+        double[] solutions;
+
+        if(delta == 0) {
+            solutions = new double[1];
+            solutions[0] = -b / (2*a);
+            return solutions;
+        }
+
+        solutions = new double[2];
+        solutions[0] = (-b + Math.sqrt(delta)) / (2*a);
+        solutions[1] = (-b - Math.sqrt(delta)) / (2*a);
+
+        return solutions;
     }
 
     public static void main(String args[]) {

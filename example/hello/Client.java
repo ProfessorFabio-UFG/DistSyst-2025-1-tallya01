@@ -39,6 +39,7 @@ package example.hello;
 
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.Arrays;
 
 public class Client {
 
@@ -54,8 +55,28 @@ public class Client {
             System.out.println("Registry has been located");
             Hello stub = (Hello) registry.lookup("Hello");
             System.out.println("Found server");
+            
             String response = stub.sayHello();
             System.out.println("response: " + response);
+
+            stub.setUserName("Tallya");
+            response = stub.sayHello();
+            System.out.println("response (2): " + response);
+
+            response = stub.getUpTime();
+            System.out.println("response (3): " + response);
+
+            double[] eqSolution = stub.solveQuadraticEquation(1, -5, 6);
+            System.out.println("response (4): " + Arrays.toString(eqSolution));
+
+            eqSolution = stub.solveQuadraticEquation(1, -4, 4);
+            System.out.println("response (5): " + Arrays.toString(eqSolution));
+
+            response = stub.getUpTime();
+            System.out.println("response (3): " + response);
+
+            eqSolution = stub.solveQuadraticEquation(1, 4, 5);
+            System.out.println("response (6): " + Arrays.toString(eqSolution));            
         } catch (Exception e) {
             System.err.println("Client exception: " + e.toString());
             e.printStackTrace();

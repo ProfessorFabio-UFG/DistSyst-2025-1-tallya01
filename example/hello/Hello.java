@@ -42,4 +42,8 @@ import java.rmi.RemoteException;
 
 public interface Hello extends Remote {
     String sayHello() throws RemoteException;
+    void setUserName(String userName) throws RemoteException;
+    String getUserName() throws RemoteException;
+    String getUpTime() throws RemoteException;
+    double[] solveQuadraticEquation(double a, double b, double c) throws RemoteException;
 }
