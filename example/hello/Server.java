@@ -40,6 +40,7 @@ package example.hello;
 import java.rmi.registry.Registry;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.AlreadyBoundException;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
@@ -66,7 +67,7 @@ public class Server implements Hello {
 
     public String getUpTime() throws RemoteException {
         long upTime = System.currentTimeMillis() - this.startTime;
-        return "Server up for " + upTime/1000 + "s";
+        return "Server up for " + upTime + "ms";
     }
 
     public double[] solveQuadraticEquation(double a, double b, double c) throws RemoteException {
@@ -98,12 +99,12 @@ public class Server implements Hello {
 
             // Bind the remote object's stub in the registry
             Registry registry = LocateRegistry.getRegistry();
-            
+
             try {
+                //avoid AlreadyBoundException
                 registry.unbind("Hello");
-            } catch (Exception e2) {
-                System.err.println("Unbind exception: " + e2.toString());
-                e2.printStackTrace();
+            } catch (NotBoundException e) {
+                //ignore
             }
 
             registry.bind("Hello", stub);
